@@ -44,7 +44,7 @@ class ResetPasswordNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        $url = url('/reset-password?token=' . $this->token);
+        $url = 'http://localhost:5173/reset-password/' . $this->token;
 
         return (new MailMessage)
             ->line('Vous recevez cet email parce que nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.')
