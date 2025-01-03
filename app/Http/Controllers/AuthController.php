@@ -103,4 +103,13 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Account deleted successfully']);
     }
+
+    public function verifyToken(Request $request)
+    {
+        if (auth()->check()) {
+            return response()->json(['message' => 'Token valide'], 200);
+        }
+
+        return response()->json(['message' => 'Token invalide ou expiré'], 401);
+    }
 }
