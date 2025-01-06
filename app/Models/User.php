@@ -6,6 +6,7 @@ use App\Notifications\ResetPasswordNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -22,6 +23,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'profile_image'
     ];
 
     /**
@@ -82,5 +84,10 @@ class User extends Authenticatable implements JWTSubject
     public function article()
     {
         return $this->hasMany(Article::class);
+    }
+
+    public function imageUrl()
+    {
+        return Storage::disk('public')->url($this->image);
     }
 }

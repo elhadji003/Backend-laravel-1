@@ -21,6 +21,11 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::delete('delete-account', [AuthController::class, 'deleteAccount']);
     Route::post('verify-token', [AuthController::class, 'verifyToken']);
 
+    // Gestion de l'image de profil
+    Route::post('update-profile-img', [AuthController::class, 'updateProfileImg']);
+    Route::get('profile-image', [AuthController::class, 'getProfileImage']);
+    Route::delete('delete-profile-image', [AuthController::class, 'deleteProfileImage']);
+
     // Gestion des articles
     Route::post('/articles', [ArticleController::class, 'createArticle']);
     Route::get('/user-articles', [ArticleController::class, 'getUserArticles']);
@@ -30,5 +35,5 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     // Gestion des commentaires
     Route::post('/comment/{id}', [CommentController::class, 'comment']);
-    Route::get('/comments/{id}', [CommentController::class, 'getComments']); // Obtenir les commentaires d'un article
+    Route::get('/comments/{id}', [CommentController::class, 'getComments']);
 });
