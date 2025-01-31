@@ -91,16 +91,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'Logged out successfully']);
     }
 
-    // Mettre à jour le profil de l'utilisateur
-    public function updateProfile(Request $request)
-    {
-        $user = $request->user();
-
-        $user->update($request->only(['name', 'email']));
-
-        return response()->json($user);
-    }
-
     // Supprimer le compte de l'utilisateur
     public function deleteAccount(Request $request)
     {
@@ -126,10 +116,8 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        // Mettre à jour les informations de base
         $user->update($request->only(['name', 'email']));
 
-        // Mettre à jour l'image de profil si elle est fournie
         if ($request->hasFile('profile_image')) {
             $request->validate([
                 'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -144,9 +132,11 @@ class AuthController extends Controller
                 Storage::disk('public')->delete($user->profile_image);
             }
 
-            // Stocker la nouvelle image dans le disque public
+            // Stocker l'image avec un chemin correct
             $path = $request->file('profile_image')->store('profile_images', 'public');
-            $user->profile_image = $path;
+
+            // Sauvegarder l'URL complète au lieu du chemin relatif
+            $user->profile_image = url("storage/$path");
             $user->save();
         }
 
